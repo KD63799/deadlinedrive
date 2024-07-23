@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { AnimatePresence,motion } from "framer-motion";
 import { jwtDecode } from "jwt-decode";
-import { XMarkIcon, ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import getCategoryName from "@services/getCategoryName";
 
 export default function QuoteManage() {
   const [myQuotes, setMyQuotes] = useState([]);
@@ -62,17 +63,6 @@ export default function QuoteManage() {
     fetchMyQuotes();
     fetchData();
   }, []);
-
-  const getCategoryName = (quoteId) => {
-    const quoteCat = quoteCategory.find((qc) => qc.id_quote === quoteId);
-    if (quoteCat) {
-      const categories = category.find(
-        (cat) => cat.id === quoteCat.id_category
-      );
-      return categories ? categories.name : "Catégorie inconnue";
-    }
-    return "Pas de catégorie";
-  };
 
   const handleEditQuote = (quote) => {
     setEditingQuote(quote);
@@ -193,7 +183,7 @@ export default function QuoteManage() {
               <p className="mt-2 pb-4">{quote.author}</p>
               <hr className="w-3/4 border border-black" />
               <p className="mt-3 text-xl font-semibold">Catégorie</p>
-              <p className="mt-2 pb-4">{getCategoryName(quote.id)}</p>
+              <p className="mt-2 pb-4">{getCategoryName(quote.id, quoteCategory, category)}</p>
               <footer
                 className="mt-4 text-lg font-semibold flex justify-between mt-auto"
                 onClick={(e) => e.stopPropagation()}
@@ -279,7 +269,7 @@ export default function QuoteManage() {
                   &rdquo;
                 </div>
                 <p className="mb-6 w-full font-semibold text-custom-black text-center text-xl">
-                  &ndash; {selectedQuote.author}, {getCategoryName(selectedQuote.id)}
+                  &ndash; {selectedQuote.author}, {getCategoryName(selectedQuote.id, quoteCategory, category)}
                 </p>
               </div>
               <footer className="mt-4 text-lg font-semibold flex w-full justify-center gap-2">

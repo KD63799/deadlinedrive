@@ -15,7 +15,7 @@ const YoursEvents = ({ tasks }) => {
 
   return (
     <div>
-      <h2 className="py-7 font-semibold text-xl flex justify-center">Vos évènements</h2>
+      <h2 className="py-7 font-semibold text-xl flex justify-center">Vos èvénements</h2>
       <div className="grid md:grid-cols-3">
         {recentTasks.map((task, index) => (
           <motion.div 

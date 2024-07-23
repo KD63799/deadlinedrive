@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 function Password() {
   const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
@@ -117,40 +118,9 @@ function Password() {
                   onClick={handleTogglePassword}
                 >
                   {showPassword ? ( // Toggle eye icon for password visibility
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="h-6 w-6 text-gray-600"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.928 8.072A9 9 0 0 1 20.5 12a9 9 0 1 1-17.856 2.072m-2.072-2.072a9 9 0 0 1 14.956-2.072M12 17.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
-                      />
-                    </svg>
-                  ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="h-6 w-6 text-gray-600"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.928 8.072A9 9 0 0 1 20.5 12a9 9 0 1 1-17.856 2.072m-2.072-2.072a9 9 0 0 1 14.956-2.072M12 17.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 15s2-1 3-2-2-3-3-3-3 1-3 1"
-                      />
-                    </svg>
+               <EyeSlashIcon className="h-6 w-6" />
+              ) : (
+              <EyeIcon className="h-6 w-6" />
                   )}
                 </div>
               </div>
@@ -171,47 +141,16 @@ function Password() {
                   onClick={handleTogglePassword}
                 >
                   {showPassword ? ( // Toggle eye icon for password visibility
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="h-6 w-6 text-gray-600"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.928 8.072A9 9 0 0 1 20.5 12a9 9 0 1 1-17.856 2.072m-2.072-2.072a9 9 0 0 1 14.956-2.072M12 17.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
-                      />
-                    </svg>
+                 <EyeSlashIcon className="h-6 w-6" />
                   ) : (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      className="h-6 w-6 text-gray-600"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.928 8.072A9 9 0 0 1 20.5 12a9 9 0 1 1-17.856 2.072m-2.072-2.072a9 9 0 0 1 14.956-2.072M12 17.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 15s2-1 3-2-2-3-3-3-3 1-3 1"
-                      />
-                    </svg>
+                  <EyeIcon className="h-6 w-6" />
                   )}
                 </div>
               </div>
               {errorMessage && <p className="text-red-500">{errorMessage}</p>}{" "}
               {/* Display error message if present */}
               <div className="mt-4">
-                <button
+                <button aria-label="Sauvegarder nouveau mot de passe"
                   onClick={handleSaveClick}
                   className="inline-block shadow-2xl rounded-md bg-black px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-gray-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 >

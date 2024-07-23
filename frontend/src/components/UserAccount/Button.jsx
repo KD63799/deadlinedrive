@@ -3,7 +3,7 @@ import React from "react";
  //Component for displaying the button on the Account user interface
 function Button({ type, edit, text, disabled }) {
   return (
-    <button
+    <button aria-label="Ouvrir la modal supression de compte"
       type={type}
       onClick={edit}
       disabled={disabled} 

@@ -78,7 +78,7 @@ export default function PrivacyPolicy() {
       <section className="mb-5">
         <h2 className="text-2xl font-semibold">8. Nous contacter</h2>
         <p className="mt-2">
-          Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité, veuillez nous contacter à : [votre email ou formulaire de contact].
+          Si vous avez des questions ou des préoccupations concernant cette politique de confidentialité, veuillez nous contacter à : DeadlineDrive@mail.com
         </p>
       </section>
     </div>

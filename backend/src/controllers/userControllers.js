@@ -1,5 +1,6 @@
 const models = require("../models");
 const argon2 = require("argon2");
+const { validationResult } = require('express-validator');
 
 // Function to get all users
 const browse = (req, res) => {
@@ -34,6 +35,10 @@ const read = (req, res) => {
 
 //function for changing a user information
 const edit = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() }); // Bad Request
+  }
   try {
     const userId = parseInt(req.params.id, 10); // Extract user ID from request parameters
     const newUserDetails = req.body; // Extract new user details from request body
@@ -99,6 +104,10 @@ const changePassword = async (req, res) => {
 
 // Function to add a new user
 const add = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() }); // Bad Request
+  }
   try {
     const user = req.body;
     const result = await models.user.insert(user);

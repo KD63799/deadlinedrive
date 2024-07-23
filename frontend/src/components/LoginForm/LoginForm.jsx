@@ -21,7 +21,7 @@ const LoginForm = () => {
   const navigate = useNavigate(); // Use useNavigate to obtain the navigate function
 
   return (
-    <main className="md:min-h-[87.5vh] flex flex-col p-2 items-center justify-center"> {/* Main container with minimum height, centered content */}
+    <div className="md:min-h-[87.5vh] flex flex-col p-2 items-center justify-center"> {/* Main container with minimum height, centered content */}
       <div className="max-w-6xl m-auto grid md:grid-cols-2 gap-8"> {/* Responsive grid for large screens */}
         <motion.div variants={imageVariants} initial="hidden" animate="visible"> {/* Animated component for the image */}
           <img
@@ -113,7 +113,7 @@ const LoginForm = () => {
                   </Link>
                 </div>
 
-                <button
+                <button aria-label="Connexion"
                   type="submit"
                   className="bg-butterscotch text-white py-2 rounded flex items-center justify-center" // Submit button with styles
                   disabled={isSubmitting} // Disable the button during submission
@@ -143,7 +143,7 @@ const LoginForm = () => {
           </Formik>
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 

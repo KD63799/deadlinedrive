@@ -11,6 +11,8 @@ import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import QuotesFavoris from "@components/Favorites/QuotesFavoris";
+import GetUserFirstName from "@services/GetUserFirstName";
+import formatDateCommentary from "@services/formatDateCommentary";
 
 function CommentSection({
   quote,
@@ -32,6 +34,7 @@ function CommentSection({
   const [editedContent, setEditedContent] = useState("");
   // State to hold the user ID from local storage for authentication purposes.
   const [userId, setUserID] = useState(localStorage.getItem("id"));
+  const [quoteState, setQuoteState] = useState(quote);
   // Ref to manage clicks outside the modal to close it.
   const modalRef = useRef(null);
   const [favIcon, setFavIcon] = useState(false);
@@ -65,7 +68,7 @@ function CommentSection({
       id_user: userId,
       id_quote: quote.id,
     };
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/comment`, commentData)
+    axios.post(`${import.meta.env.VITE_BACKEND_URL}/comments`, commentData)
       .then(response => {
         // Update comments locally without needing to refetch from the server.
         const updatedComments = [...comments, {
@@ -98,7 +101,7 @@ function CommentSection({
 
   // Updates an existing comment and syncs with the backend.
   const handleUpdateComment = (commentId) => {
-    axios.put(`${import.meta.env.VITE_BACKEND_URL}/comment/${commentId}`, {
+    axios.put(`${import.meta.env.VITE_BACKEND_URL}/comments/${commentId}`, {
       content: editedContent,
       id_user: userId,
       id_quote: quote.id
@@ -115,26 +118,72 @@ function CommentSection({
   };
 
   // Utility function to format dates for display.
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString("fr-FR", options);
-  };
+  // const formatDate = (dateString) => {
+  //   const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+  //   return new Date(dateString).toLocaleDateString("fr-FR", options);
+  // };
 
   // Retrieves user's first name from local storage, defaulting to "Anonyme" if not found.
   const getUserFirstNameFromLocalStorage = () => {
     return localStorage.getItem("firstName") || "Anonyme";
   };
 
-  // Looks up a user's first name using their ID from the loaded user data.
-  const getUserFirstName = (userId) => {
-    const user = users.find(user => user.id === parseInt(userId, 10));
-    return user ? user.firstName : "Unknown User";
-  };
+  // // Looks up a user's first name using their ID from the loaded user data.
+  // const getUserFirstName = (userId) => {
+  //   const user = users.find(user => user.id === parseInt(userId, 10));
+  //   return user ? user.firstName : "Unknown User";
+  // };
 
   // Handles clicks outside of the modal to close it.
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
       onClose();  // Trigger the close function passed as a prop.
+    }
+  };
+
+  const handleUpvote = async (quoteId) => {
+    console.log(`Upvoting quote ID: ${quoteId}`);
+    try {
+      const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/quotes/${quoteId}/upvote`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Upvote response:", response.data);
+        setQuoteState((prevQuote) =>
+          prevQuote.id === quoteId ? { ...prevQuote, vote: prevQuote.vote + 1 } : prevQuote
+        );
+      console.log("Upvote successful");
+    } catch (error) {
+      console.error("Failed to upvote", error);
+    }
+  };
+  
+  const handleDownvote = async (quoteId) => {
+    console.log(`Downvoting quote ID: ${quoteId}`);
+    try {
+      const token = localStorage.getItem("token"); // Assuming you store the token in localStorage
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/quotes/${quoteId}/downvote`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Downvote response:", response.data);
+      setQuoteState((prevQuote) =>
+        prevQuote.id === quoteId ? { ...prevQuote, vote: prevQuote.vote - 1 } : prevQuote
+      );
+      console.log("Downvote successful");
+    } catch (error) {
+      console.error("Failed to downvote", error);
     }
   };
 
@@ -154,7 +203,7 @@ return (
       onClick={(e) => e.stopPropagation()} // Prevents propagation of click events to the modal's backdrop.
     >
       <div className="flex justify-end mb-4">
-        <button onClick={onClose} className="text-white">
+        <button aria-label="Fermer le menu" onClick={onClose} className="text-white">
           <XMarkIcon className="bg-red-500 w-6 h-6" />
         </button>
       </div>
@@ -173,31 +222,40 @@ return (
         </div>
       </div>
       <p className="mb-6 mt-1 w-full text-xl text-custom-black text-center">Catégorie : {category}</p>
-      <footer className="mt-4 text-lg font-semibold flex w-full justify-center gap-2">
-        <section className="flex items-center border-2 border-dashed border-custom-main-orange rounded p-px px-4">
-          <ChevronUpIcon className="w-6 hover:fill-green-500 cursor-pointer" />
-          <p className="text-2xl px-1">{quote.vote}</p>
-          <ChevronDownIcon className="w-6 hover:fill-red-500 cursor-pointer" />
+      <footer 
+      className="mt-4 text-lg font-semibold flex w-full justify-center gap-2"
+      onClick={(e) => e.stopPropagation()}
+      >
+        <section className="flex items-center border-2 border-dashed border-custom-main-orange rounded p-px px-4"
+        onClick={(e) => e.stopPropagation()}
+        >
+          <ChevronUpIcon 
+          className="w-6 hover:fill-green-500 cursor-pointer" 
+          onClick={(e) => { e.stopPropagation(); handleUpvote(quoteState.id); }}
+          />
+          <p className="text-2xl px-1">{quoteState.vote}</p>
+          <ChevronDownIcon 
+          className="w-6 hover:fill-red-500 cursor-pointer" 
+          onClick={(e) => { e.stopPropagation(); handleDownvote(quoteState.id); }} 
+          />
         </section>
-        <button className="rounded bg-custom-main-orange w-36 text-white font-normal cursor-pointer">
+        <button aria-label="Partager la citation" className="rounded bg-custom-main-orange w-36 text-white font-normal cursor-pointer">
           Partager
         </button>
-        <div>
           <QuotesFavoris
             quote={quote}
             favIcon={favIcon}
             toggleFavorite={toggleFavorite}
             fav={fav}
           />
-        </div>
       </footer>
       <div className="w-full mt-4">
         {comments.map((comment, index) => (
           <div key={index} className="bg-gray-100 p-3 rounded-lg mb-2">
             <p className="text-lg font-bold">
-              {getUserFirstName(comment.id_user)}
+              {GetUserFirstName(comment.id_user, users)}
             </p>
-            <p className="text-sm">{formatDate(comment.created_at)}</p>
+            <p className="text-sm">{formatDateCommentary(comment.created_at)}</p>
             {editingComment === comment.id && parseInt(userId) === comment.id_user ? (
               <div className="flex flex-col">
                 <textarea
@@ -205,7 +263,7 @@ return (
                   value={editedContent}
                   onChange={(e) => setEditedContent(e.target.value)}
                 />
-                <button
+                <button aria-label="Comfirmer la modification du commentaire"
                   className="mt-2 bg-butterscotch hover:bg-caramel text-white font-bold py-2 px-4 rounded w-/4"
                   onClick={() => handleUpdateComment(comment.id)}
                 >
@@ -213,16 +271,19 @@ return (
                 </button>
               </div>
             ) : (
-              <p className="text-sm">{comment.content}</p>
+              <div>
+                <div style={{ height: '1px', backgroundColor: 'black', marginBottom: '20px' }}></div>
+                <p className="text-sm">{comment.content}</p>
+              </div>
             )}
             <div className="flex space-x-2 mt-2 justify-end">
-              <button
+              <button aria-label="Modifier le commentaire"
                 className="text-blue-500 hover:text-blue-700"
                 onClick={() => handleEditComment(comment.id)}
               >
                 {parseInt(userId) === comment.id_user && <PencilIcon className="w-5 h-5" />}
               </button>
-              <button
+              <button aria-label="Supprimer le commentaire"
                 className="text-red-500 hover:text-red-700"
                 onClick={() => handleDeleteComment(comment.id)}
               >
@@ -238,11 +299,11 @@ return (
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
-          <button
+          <button aria-label="publier le commentaire"
             className="mt-2 bg-butterscotch hover:bg-caramel text-white font-bold py-2 px-4 rounded"
             onClick={handleAddComment}
           >
-            Envoyer
+            Publier
           </button>
         </div>
       </div>

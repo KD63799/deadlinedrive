@@ -8,6 +8,7 @@ import { createEventId } from "./event-utils"; // Importing utility function for
 import frLocale from "@fullcalendar/core/locales/fr"; // French locale for FullCalendar
 import "./CalendarStyle.css"; // CSS file for calendar styling
 import ScrollToTopButton from '../ScrollToTopButton/ScrollToTopButton'; // Import the ScrollToTopButton component
+import formatDateCalendar from "@services/formatDateCalendar";
 
 export default function CalendarComponents({ tasks, setTasks, fetchTasks }) {
   // Simulate user authentication
@@ -42,17 +43,17 @@ export default function CalendarComponents({ tasks, setTasks, fetchTasks }) {
     return `${year}-${month}-${day}`;
   }
 
-  // Function to format date and time string to "YYYY-MM-DD HH:mm:ss" format
-  function formatDateTime(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    const seconds = date.getSeconds().toString().padStart(2, "0");
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
+  // // Function to format date and time string to "YYYY-MM-DD HH:mm:ss" format
+  // function formatDateCalendar(dateString) {
+  //   const date = new Date(dateString);
+  //   const year = date.getFullYear();
+  //   const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  //   const day = date.getDate().toString().padStart(2, "0");
+  //   const hours = date.getHours().toString().padStart(2, "0");
+  //   const minutes = date.getMinutes().toString().padStart(2, "0");
+  //   const seconds = date.getSeconds().toString().padStart(2, "0");
+  //   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  // }
 
   // Convert tasks to events for FullCalendar
   useEffect(() => {
@@ -91,7 +92,7 @@ export default function CalendarComponents({ tasks, setTasks, fetchTasks }) {
   const handleDateSelect = (selectInfo) => {
     setNewTask({
       ...newTask,
-      deadline: formatDateTime(selectInfo.startStr),
+      deadline: formatDateCalendar(selectInfo.startStr),
     });
     setCreateModalIsOpen(true); // Open create modal
   };
@@ -141,7 +142,7 @@ export default function CalendarComponents({ tasks, setTasks, fetchTasks }) {
       const updatedEvent = {
         ...selectedEvent,
         id_user: user_id,
-        deadline: formatDateTime(selectedEvent.start),
+        deadline: formatDateCalendar(selectedEvent.start),
       };
 
       await axios.put(
@@ -315,7 +316,7 @@ export default function CalendarComponents({ tasks, setTasks, fetchTasks }) {
                   type="datetime-local"
                   value={
                     selectedEvent?.start
-                      ? formatDateTime(selectedEvent.start).substring(0, 16)
+                      ? formatDateCalendar(selectedEvent.start).substring(0, 16)
                       : ""
                   }
                   onChange={(e) =>

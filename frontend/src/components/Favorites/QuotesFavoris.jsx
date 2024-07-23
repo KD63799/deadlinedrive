@@ -128,25 +128,26 @@ function QuotesFavoris({
   };
 
   return (
-    <div>
-      {maxQuote && <ModalFavorites />} {/* Display modal if max quote limit is reached */}
-      {favIcon ? (
-        <button onClick={fill} className="flex" href="#">
-          <HeartIcon
-            onClick={handleFavoriteToggle}
-            className="w-2/12 text-red-700"
-          />
-        </button>
-      ) : (
-        <button onClick={outline} className="flex" href="#">
-          <HeartIconOutline
-            onClick={handleFavoriteToggle}
-            className="w-2/12 text-gray-700"
-          />
-        </button>
-      )}
-    </div>
-  );
+<>
+{maxQuote && <ModalFavorites />} {/* Display modal if max quote limit is reached */}
+{favIcon ? (
+  <button onClick={fill} className="" href="#">
+    <HeartIcon
+      onClick={handleFavoriteToggle}
+      className="w-9 h-9 text-red-700"
+    />
+  </button>
+) : (
+  <button onClick={outline} className="" href="#">
+    <HeartIconOutline
+      onClick={handleFavoriteToggle}
+      className="w-9 h-9 text-gray-700"
+    />
+  </button>
+)}
+
+</>
+);
 }
 
 export default QuotesFavoris;

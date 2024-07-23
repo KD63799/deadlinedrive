@@ -6,14 +6,14 @@ import bookOpenWhite from "../../assets/bookOpenWhite.jpg";
 
 const WelcomeHome = () => {
   return (
-    <main className=" flex flex-col p-2 items-center justify-center">
+    <div className=" flex flex-col p-2 items-center justify-center">
        <motion.div
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1 }}
         >
           <h1 className=" p-8 font-semibold text-3xl flex justify-center items-center">
-            Bienvenue sur Deadline Drive, votre allié pour rester motivé !
+            Bienvenue sur Deadline Drive, votre alliè pour rester motivè !
           </h1>
       </motion.div>
       <article className="flex flex-row flex-wrap p-4 m-2 ">
@@ -42,7 +42,7 @@ const WelcomeHome = () => {
       </article>
 
       
-    </main>
+    </div>
   );
 };
 

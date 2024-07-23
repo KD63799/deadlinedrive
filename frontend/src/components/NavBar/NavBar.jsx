@@ -80,16 +80,17 @@ const NavBar = () => {
                   <motion.div variants={linkVariants} whileHover="hover" key={index}>
                     {path === '/quotes' ? (
                       <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                        <Link to="/quotes" className="text-custom-black hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium flex items-center">
-                          Citations
-                          <ChevronDownIcon className="h-5 w-5 ml-1" />
-                        </Link>
+                         <span className="text-custom-black text-sm hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium flex items-center">
+                        Citations
+                        <ChevronDownIcon className="h-4 w-4 ml-1" />
+                        </span>
                         <motion.div
                           variants={dropdownVariants}
                           initial="closed"
                           animate={isDropdownOpen ? "opened" : "closed"}
                           className="absolute left-0 w-48 rounded-md shadow-lg bg-butterscotch z-10"
                         >
+                          <Link to="/quotes" className="block px-4 py-2 text-sm text-custom-black hover:text-gray-200">Voir les citations</Link>
                           <Link to="/manage-my-quotes" className="block px-4 py-2 text-sm text-custom-black hover:text-gray-200">Gérer mes citations</Link>
                         </motion.div>
                       </div>
@@ -117,7 +118,7 @@ const NavBar = () => {
                   </motion.div>
                 </Link>
               ) : (
-                <motion.button whileHover="hover" onClick={item.onClick} className="text-custom-black hover:text-gray-200" key={index}>
+                <motion.button aria-label="Navigation" whileHover="hover" onClick={item.onClick} className="text-custom-black hover:text-gray-200" key={index}>
                   <motion.div variants={linkVariants}>
                     {item.icon}
                   </motion.div>
@@ -126,7 +127,7 @@ const NavBar = () => {
             ))}
           </div>
           <div className="-mr-2 flex md:hidden">
-            <motion.button onClick={toggleMenu} className="text-custom-black hover:text-gray-200 inline-flex items-center justify-center p-2 rounded-md focus:outline-none">
+            <motion.button aria-label="Fermer le menu" onClick={toggleMenu} className="text-custom-black hover:text-gray-200 inline-flex items-center justify-center p-2 rounded-md focus:outline-none">
               <motion.div variants={linkVariants}>
                 {isOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
               </motion.div>

@@ -94,7 +94,7 @@ function FetchData() {
               <Form>
                 <div className="flex flex-wrap max-lg:justify-center gap-3">
                   <div className="flex max-lg:justify-center">
-                    <Button
+                    <Button aria-label="Editer"
                       type="button"
                       edit={handleEditClick}
                       text={isEditing ? "Annuler" : "Éditer"}
@@ -103,7 +103,7 @@ function FetchData() {
                   {/* Save button only shown in edit mode */}
                   {isEditing && (
                     <div className="flex max-lg:justify-center">
-                      <Button
+                      <Button aria-label="Sauvegarder"
                         type="submit"
                         text={"Sauvegarder"}
                         disabled={isSubmitting}

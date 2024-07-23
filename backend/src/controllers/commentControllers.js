@@ -1,4 +1,6 @@
 const models = require("../models");
+const { validationResult } = require('express-validator');
+
 
 // Fetches all comments from the database
 const browse = async (req, res) => {
@@ -38,39 +40,38 @@ const findByQuote = async (req, res) => {
     }
 };
 
-// Updates a specific comment by ID
-const edit = async (req, res) => {
-    const comment = req.body;
-    console.log(req.body); // Logging the received body for debugging
-    comment.id = parseInt(req.params.id, 10); // Ensure the id is treated as an integer
-
-    // Validate the presence of quote or user association
-    if (!comment.id_quote && !comment.id_user) {
-        console.log(comment.id_quote); // Debugging log
-        console.log(comment.id_user); // Debugging log
-        return res.status(400).send({ error: "A comment must be associated with either a quote or a user."});
-    }
-
-    try {
-        await models.comment.update(comment);
-        res.sendStatus(204); // Send a success status (No Content) when update is successful
-    } catch (error) {
-        console.error(error);
-        res.status(400).send({ error: error.message }); // Send an error status if the update fails
-    }
-};
-
-// Adds a new comment to the database
 const add = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
     const comment = req.body;
     try {
         const result = await models.comment.insert(comment);
-        res.location(`/comments/${result.insertId}`).sendStatus(201); // Set location header and send a Created status
+        res.location(`/comments/${result.insertId}`).sendStatus(201);
     } catch (error) {
         console.error(error);
-        res.status(400).send({ error: error.message }); // Send an error status if the insert fails
+        res.status(400).send({ error: error.message });
     }
 };
+
+const edit = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const comment = { ...req.body, id: parseInt(req.params.id, 10) };
+    try {
+        await models.comment.update(comment);
+        res.sendStatus(204); // No Content
+    } catch (error) {
+        console.error(error);
+        res.status(400).send({ error: error.message });
+    }
+};
+
 
 // Deletes a comment by ID
 const destroy = async (req, res) => {

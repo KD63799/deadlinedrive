@@ -73,7 +73,7 @@ function NotificationsComponent({ isOpen, onClose }) {
                                 notifications.length > 0 ? notifications.map(notification => (
                                     <div key={notification.id} className="my-6 p-4 border-b flex justify-between items-center gap-4">
                                         <div className="flex-1">
-                                            <p className="text-custom-black">Citation du jour : {notification.quoteText} - {notification.quoteAuthor}</p>
+                                            <p className="text-custom-black font-semibold">Citation du jour : {notification.quoteText} - {notification.quoteAuthor}</p>
                                             <p className="text-sm mt-2 text-gray-600">Reçu le {new Date(notification.date_sent).toLocaleDateString("fr-FR")}</p>
                                         </div>
                                         <div className="flex items-center">
@@ -101,9 +101,9 @@ function NotificationsComponent({ isOpen, onClose }) {
                                 </div>
                             )}
                         </div>
-                        <button
+                        <button aria-label="Fermer le menu"
                             className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-                            onClick={onClose} // Close button to dismiss the modal
+                            onClick={onClose} 
                         >
                             Fermer
                         </button>

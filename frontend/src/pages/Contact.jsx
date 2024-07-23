@@ -94,7 +94,7 @@ function Contact() {
                 <div className="mb-8 flex w-full max-w-[370px]">
                   <div className="w-full">
                     <h4 className="mb-1 text-xl font-bold text-dark dark:text-white">
-                      Téléphone
+                      Tèlèphone
                     </h4>
                     <p className="text-base text-body-color dark:text-dark-6">
                       +00 00 00 00 0

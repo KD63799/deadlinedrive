@@ -13,7 +13,7 @@ const PasswordRecoverySchema = Yup.object().shape({
 
 const PasswordRecoveryContent = ({ onRecoverPassword }) => {
   return (
-    <main className="flex flex-col items-center justify-center p-8 md:p-24 w-full min-h-[85.5vh]">
+    <div className="flex flex-col items-center justify-center p-8 md:p-24 w-full min-h-[85.5vh]">
       <div className="relative flex flex-col items-center border rounded-md border-butterscotch p-8 md:p-12 w-full max-w-4xl">
       <motion.img
   src={logo}
@@ -44,7 +44,7 @@ const PasswordRecoveryContent = ({ onRecoverPassword }) => {
               {errors.email && touched.email ? (
                 <div className="text-red-500 text-xs mt-1">{errors.email}</div>
               ) : null}
-              <button
+              <button aria-label="Récuperer mot de passe"
                 type="submit"
                 className="mt-4 w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-butterscotch hover:bg-caramel focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
@@ -57,7 +57,7 @@ const PasswordRecoveryContent = ({ onRecoverPassword }) => {
           Entrez votre adresse e-mail pour récupérer votre mot de passe.
         </p>
       </div>
-    </main>
+    </div>
   );
 };
 

@@ -12,7 +12,7 @@ class TaskManager extends AbstractManager {
     // Convert the deadline string to a Date object if it's a string
     if (typeof task.deadline === 'string') {
       task.deadline = new Date(task.deadline);
-    }
+    } 
     
     // Validate the task properties
     if (

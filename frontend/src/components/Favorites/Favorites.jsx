@@ -12,7 +12,7 @@ function Favorites({ quote }) {
   useEffect(() => {
     checkFavorite(); // Check if the current quote is favorited
   }, [quote.id]);
-
+  
   // Check if the current quote is favorited by the user
   const checkFavorite = async () => {
     try {

@@ -55,7 +55,7 @@ export default function CitationHome() {
           <div className="w-1/2 pr-28 max-sm:w-full max-sm:p-2">
             <motion.img
               src={AsideImage}
-              alt="test"
+              alt="Explication animée de la personnalisation de citation."
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}

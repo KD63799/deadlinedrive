@@ -67,6 +67,34 @@ class CommentManager extends AbstractManager {
             [quoteId]
         );
     }
+
+// Method to validate the comment object
+validateComment(comment) {
+    console.log('Validating comment:', comment);
+  
+    // Convert the date_posted string to a Date object if it's a string
+    if (typeof comment.date_posted === 'string') {
+      comment.date_posted = new Date(comment.date_posted);
+    }
+    
+    // Validate the comment properties
+    if (
+      typeof comment.content !== 'string' || 
+      comment.content.trim().length === 0 || // Ensure content is not empty
+      typeof comment.id_user !== 'number' || // Ensure user ID is a number
+      (comment.id_quote && typeof comment.id_quote !== 'number') || // Optionally check quote ID if provided
+      (comment.date_posted instanceof Date && isNaN(comment.date_posted.getTime())) // Check if date_posted is a valid Date object
+    ) {
+      console.log('Validation failed:', {
+        content: typeof comment.content,
+        id_user: typeof comment.id_user,
+        id_quote: typeof comment.id_quote,
+        date_posted: comment.date_posted instanceof Date && !isNaN(comment.date_posted.getTime())
+      });
+      return false;
+    }
+    return true;
+  }
 }
 
 module.exports = CommentManager;

@@ -1,10 +1,18 @@
-
+/* Laila font definitions */
+@font-face {
+  font-display: swap;
+  font-family: 'Laila';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../src/assets/fonts/laila-v15-latin-700.woff2') format('woff2');
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
 :root{
+  
 --theme1: #C97D50;
 }
 

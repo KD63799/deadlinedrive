@@ -76,7 +76,7 @@ return (
       // If the user is logged in, display a random quote.
       <div className=" flex flex-col items-center ">
         <div className="p-4 bg-custom-main-orange m-3 rounded-lg">
-        <h3 className=" text-white  flex flex-col items-center font-semibold px-2 py-3">Citations aléatoires</h3>
+        <h3 className=" text-white  flex flex-col items-center font-semibold px-2 py-3">Citations alèatoires</h3>
         {randomQuote ? (
           <section>
             <p><strong>Citation:</strong> {randomQuote.text}</p>

@@ -16,6 +16,7 @@ export default function CustomizeQuotes() {
   const [isCustomAuthorDisabled, setIsCustomAuthorDisabled] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const token = localStorage.getItem('token');
   console.log('token:', token)
@@ -49,7 +50,13 @@ export default function CustomizeQuotes() {
   
   useEffect(() => {
     fetchData();
-  }, []);
+
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [token]);
 
   const addQuote = async (newQuote, token) => {
     if (!newQuote.author || !newQuote.text || !newQuote.id_category) {
@@ -88,6 +95,17 @@ export default function CustomizeQuotes() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isLoggedIn) {
+      addQuote(newQuote, token);
+    } else {
+      setErrorMessage(
+        <>Vous devez être connecté(e) pour créer une citation. <Link to="/login" className="text-blue-500 hover:text-blue-700 underline">Connectez-vous ici.</Link></>);
+      setTimeout(() => setErrorMessage(""), 5000);
+    }
+  };
+
   return (
     <>
     <motion.div
@@ -96,7 +114,7 @@ export default function CustomizeQuotes() {
       transition={{ duration: 1, ease: "easeOut" }}
       className="flex flex-col max-w-7xl m-auto"
     >
-      <h1 className="text-3xl py-6 font-semibold flex justify-center">Créer une citation</h1>
+      <h1 className="text-3xl py-6 font-semibold flex justify-center">Crèer une citation</h1>
       <div className="flex flex-row flex-wrap gap-20 px-2 max-sm:gap-0">
         <div className="flex flex-col w-2/5 max-sm:w-full">
           {successMessage && (
@@ -120,11 +138,7 @@ export default function CustomizeQuotes() {
             </motion.div>
           )}
           <form
-            onSubmit={(e) => {
-              const token = localStorage.getItem("token"); // Obtenez le token depuis le stockage local ou tout autre endroit où vous le stockez
-              addQuote(newQuote, token);
-              e.preventDefault();
-            }}
+            onSubmit={handleSubmit}
             className="flex flex-col gap-6"
           >
             <motion.textarea

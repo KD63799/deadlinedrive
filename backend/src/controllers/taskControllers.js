@@ -14,7 +14,7 @@ const browse = async (req, res) => {
 
 // Fetch a specific task by its ID
 const read = async (req, res) => {
-  try {
+  try { 
     const [rows] = await models.task.find(req.params.id);
     if (!rows.length) {
       return res.sendStatus(404); // Not Found

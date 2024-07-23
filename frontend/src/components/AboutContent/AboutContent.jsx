@@ -28,7 +28,7 @@ const AboutContent = () => {
     },
     {
       id: 3,
-      name: "GAVINO Jerome",
+      name: "GAVINO Jèrôme",
       role: "Développeur Web Jr.",
       image: jeromeProfil,
       linkedin: "https://www.linkedin.com/in/jérôme-gavino-284a02b8/",
@@ -43,12 +43,14 @@ const AboutContent = () => {
   ];
 
   return (
-    <main className="md:min-h-[87vh] mx-auto px-4 sm:px-6 lg:px-8"> {/* Main container with minimum height, centered content */}
+    <div className="md:min-h-[87vh] mx-auto px-4 sm:px-6 lg:px-8"> {/* Main container with minimum height, centered content */}
       <div className="max-w-6xl mx-auto">
         <section className="my-8 px-2 py-8">
+          <div>
           <h1 className="text-4xl text-caramel font-bold text-center mb-4">
-            L'Histoire de DeadLineDrive
+            L'Histoire de DeadlineDrive
           </h1>
+          </div>
           <div className="flex flex-wrap gap-8 md:items-center">
             <div className="flex-1 basis-80">
               <img
@@ -83,10 +85,10 @@ const AboutContent = () => {
         </section>
         <section className="my-8 px-2 py-8">
           <h2 className="text-4xl text-caramel font-bold text-center mb-2">
-            Nos Catégories
+            Nos Catègories
           </h2>
           <h3 className="text-2xl text-custom-black font-bold text-center mb-4">
-            Auteur, Manga, Série, Film, Animé, Histoire, Poésie, Personnalités
+            Auteur, Manga, Sèrie, Film, Animè, Histoire, Poèsie, Personnalitès
             ou encore Sport
           </h3>
           <p className="text-1xl text-grey-600">
@@ -108,7 +110,7 @@ const AboutContent = () => {
         </section>
         <section className="my-8 px-2 py-8">
           <h2 className="text-4xl text-caramel font-bold text-center mb-8">
-            Notre Equipe
+            Notre Èquipe
           </h2>
           <div className="flex justify-center items-center flex-wrap">
             {teamMembers.map((member, index) => (
@@ -157,7 +159,7 @@ const AboutContent = () => {
         <Faq /> {/* FAQ component */}
       </div>
       <ScrollToTopButton />
-    </main>
+    </div>
   );
 };
 

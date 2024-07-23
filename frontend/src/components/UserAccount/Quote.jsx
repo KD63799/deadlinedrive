@@ -226,24 +226,24 @@ function Quote() {
                     <section className="flex border-2 border-dashed border-custom-main-orange rounded p-px px-4"
                   onClick={(e) => e.stopPropagation()}
                   >
-                    <button className="p-1.5 w-full">
+                    <button aria-label="Upvote" className="p-1.5 w-full">
                     <ChevronUpIcon
                       className="w-6 hover:fill-green-500 cursor-pointer"
                       onClick={(e) => { e.stopPropagation(); handleUpvote(quote.id); }}
                     />
                     </button>
                     <p className="text-2xl px-1">{quote.vote}</p>
-                    <button className="w-full p-1.5">
+                    <button aria-label="Downvote" className="w-full p-1.5">
                     <ChevronDownIcon
                       className="w-6 hover:fill-red-500 cursor-pointer"
                       onClick={(e) => { e.stopPropagation(); handleDownvote(quote.id); }}/>
                       </button>
                   </section>
-                      <button className="rounded bg-custom-main-orange w-1/3 text-white font-normal cursor-copy">
+                      <button aria-label="Partager" className="rounded bg-custom-main-orange w-1/3 text-white font-normal cursor-copy">
                         Partager
                       </button>
                       {/* Favorite toggle button */}
-                      <button onClick={() => handleFavoriteToggle(quote.id)}>
+                      <button aria-label="Mettre en favoris" onClick={() => handleFavoriteToggle(quote.id)}>
                         {quote.isFavorite ? (
                           <HeartIconSolid className="w-6 text-red-700" />
                         ) : (

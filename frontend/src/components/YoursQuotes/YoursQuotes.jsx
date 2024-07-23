@@ -74,7 +74,7 @@ const App = () => {
         </div>
        
         {/* Map over the quotes array and render each quote in a div */}
-        <div className="grid md:grid-cols-3 gap-5 p-4 justify-center">
+        <div className="m-auto max-w-[1280px] grid md:grid-cols-3 gap-5 p-4 justify-center">
         {quotes.map((quote, index) => (
           <section key={index} className=" mb-4 p-4 border-2 rounded-md border-custom-main-orange shadow">
               <h2 className="text-xl font-bold">Citation n°{quote.id}</h2>

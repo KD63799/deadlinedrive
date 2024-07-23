@@ -7,13 +7,13 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> {/* Centered container with max width and horizontal padding */}
         <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-4"> {/* Flex container with column layout for mobile and row layout for desktop */}
           <Link to="/legal-notice" className="text-custom-black font-bold hover:text-gray-200"> {/* Link to the legal notice page */}
-            Politique de confidentialité
+            Mentions Légales
           </Link>
           <span className="text-custom-black"> {/* Text indicating copyright */}
             Deadline Drive 2024@ Tous droits réservés.
           </span>
           <Link to="/privacy-policy" className="text-custom-black font-bold hover:text-gray-200"> {/* Link to the privacy policy page */}
-            Conditions d'utilisation
+            Politique de confidentialité
           </Link>
         </div>
       </div>
