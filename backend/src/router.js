@@ -91,14 +91,14 @@ router.get("/comments", commentControllers.browse);
 router.get("/comment/:id", commentControllers.read);
 router.get("/comments/by-quote/:quoteId", commentControllers.findByQuote);
 // Route for update an existing comment with express validator verificaiton
-router.put('/comments/:id', [
+router.put('/comments/:id', verifyToken, [
     body('content').optional().trim().isLength({ min: 1 }).withMessage('Content cannot be empty'),
     body('content').optional().isLength({ max: 500 }).withMessage('Content too long, maximum 500 characters'),
     body('id_user').optional().isNumeric().withMessage('User ID must be numeric'),
     body('id_quote').optional().isNumeric().withMessage('Quote ID must be numeric if provided')
 ], commentControllers.edit);
-// Route for add comment with express validator verification
-router.post('/comments', [
+// Route for add comment with verifyToken and express validator verification
+router.post('/comments', verifyToken, [
   body('content').trim().isLength({ min: 1 }).withMessage('Content cannot be empty'),
   body('content').isLength({ max: 500 }).withMessage('Content too long, maximum 500 characters'),
   body('id_user').isNumeric().withMessage('User ID must be numeric'),
@@ -117,13 +117,13 @@ router.get('/notifications/:id', notificationControllers.read);
 router.post('/notifications', notificationControllers.add);
 
 // Route pour marquer une notification comme lue
-router.put('/notifications/:id/read', notificationControllers.edit);
+router.put('/notifications/:id/read', verifyToken, notificationControllers.edit);
 
 // Route pour supprimer une notification
-router.delete('/notifications/:id', notificationControllers.destroy);
+router.delete('/notifications/:id', verifyToken, notificationControllers.destroy);
 
 // Route pour obtenir toutes les notifications d'un utilisateur spécifique
-router.get('/notifications/user/:userId', notificationControllers.findByUserId);
+router.get('/notifications/user/:userId', verifyToken, notificationControllers.findByUserId);
 
 
 module.exports = router;
