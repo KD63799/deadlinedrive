@@ -61,36 +61,49 @@ function CommentSection({
     setFavIcon((prev) => !prev);
   };
 
-  // Adds a new comment to the backend and updates local state.
-  const handleAddComment = () => {
-    const commentData = {
+// Adds a new comment to the backend and updates local state.
+const handleAddComment = () => {
+  const commentData = {
       content: newComment,
       id_user: userId,
       id_quote: quote.id,
-    };
-    axios.post(`${import.meta.env.VITE_BACKEND_URL}/comments`, commentData)
-      .then(response => {
-        // Update comments locally without needing to refetch from the server.
-        const updatedComments = [...comments, {
+  };
+
+  const token = localStorage.getItem("token"); // Token from localStorage
+
+  axios.post(`${import.meta.env.VITE_BACKEND_URL}/comments`, commentData, {
+      headers: {
+          Authorization: `Bearer ${token}` // Include the token in the Authorization header
+      }
+  })
+  .then(response => {
+      // Update comments locally without needing to refetch from the server.
+      const updatedComments = [...comments, {
           ...commentData,
           username: getUserFirstNameFromLocalStorage(),
           created_at: new Date().toISOString(),
-        }].slice(-3);  // Maintains only the last three comments in the state.
-        setComments(updatedComments);
-        setNewComment("");  // Reset input field after submission.
-      })
-      .catch(error => console.error("Failed to add comment:", error));
-  };
+      }].slice(-3);  // Maintains only the last three comments in the state.
+      setComments(updatedComments);
+      setNewComment("");  // Reset input field after submission.
+  })
+  .catch(error => console.error("Failed to add comment:", error));
+};
 
-  // Deletes a comment by ID and updates local state.
-  const handleDeleteComment = (commentId) => {
-    axios.delete(`${import.meta.env.VITE_BACKEND_URL}/comment/${commentId}`)
-      .then(() => {
-        // Filter out the deleted comment from the local state.
-        setComments(comments.filter(comment => comment.id !== commentId));
-      })
-      .catch(error => console.error("Failed to delete comment:", error));
-  };
+// Deletes a comment by ID and updates local state.
+const handleDeleteComment = (commentId) => {
+  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+
+  axios.delete(`${import.meta.env.VITE_BACKEND_URL}/comment/${commentId}`, {
+      headers: {
+          Authorization: `Bearer ${token}` // Include the token in the Authorization header
+      }
+  })
+  .then(() => {
+      // Filter out the deleted comment from the local state.
+      setComments(comments.filter(comment => comment.id !== commentId));
+  })
+  .catch(error => console.error("Failed to delete comment:", error));
+};
 
   // Sets up the component state for editing a specific comment.
   const handleEditComment = (commentId) => {
@@ -99,24 +112,29 @@ function CommentSection({
     setEditedContent(comment.content);
   };
 
-  // Updates an existing comment and syncs with the backend.
-  const handleUpdateComment = (commentId) => {
-    axios.put(`${import.meta.env.VITE_BACKEND_URL}/comments/${commentId}`, {
+// Updates an existing comment and syncs with the backend.
+const handleUpdateComment = (commentId) => {
+  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+
+  axios.put(`${import.meta.env.VITE_BACKEND_URL}/comments/${commentId}`, {
       content: editedContent,
       id_user: userId,
       id_quote: quote.id
-    })
-      .then(() => {
-        // Update the local state with the new content of the edited comment.
-        setComments(comments.map(comment =>
+  }, {
+      headers: {
+          Authorization: `Bearer ${token}` // Add the token to the Authorization header
+      }
+  })
+  .then(() => {
+      // Update the local state with the new content of the edited comment.
+      setComments(comments.map(comment =>
           comment.id === commentId ? { ...comment, content: editedContent } : comment
-        ));
-        setEditingComment(null);
-        setEditedContent("");  // Clear the edited content state after update.
-      })
-      .catch(error => console.error("Failed to update comment:", error));
-  };
-
+      ));
+      setEditingComment(null);
+      setEditedContent("");  // Clear the edited content state after update.
+  })
+  .catch(error => console.error("Failed to update comment:", error));
+};
   // Utility function to format dates for display.
   // const formatDate = (dateString) => {
   //   const options = { year: "numeric", month: "2-digit", day: "2-digit" };

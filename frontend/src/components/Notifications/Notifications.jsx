@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { EyeIcon, EyeSlashIcon, TrashIcon } from '@heroicons/react/24/solid';
 import { Link } from 'react-router-dom';
 
+const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+
 function NotificationsComponent({ isOpen, onClose }) {
     const [notifications, setNotifications] = useState([]);
     const userId = localStorage.getItem('id');  // Fetch the user ID from local storage
@@ -15,43 +17,55 @@ function NotificationsComponent({ isOpen, onClose }) {
         }
     }, [isOpen, userId]);
 
-    // Function to fetch notifications from the server
-    const fetchNotifications = async () => {
-        try {
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notifications/user/${userId}`);
-            const notificationsWithQuotes = await Promise.all(response.data.slice(0, 5).map(async (notification) => {
-                const quoteResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/quotes/${notification.quote_id}`);
-                return {
-                    ...notification,
-                    quoteText: quoteResponse.data.text,
-                    quoteAuthor: quoteResponse.data.author,
-                };
-            }));
-            setNotifications(notificationsWithQuotes);
-        } catch (error) {
-            console.error('Error fetching notifications:', error);
-        }
-    };
+// Function to fetch notifications from the server
+const fetchNotifications = async () => {
+    try {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notifications/user/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`  // Include the token in the Authorization header
+            }
+        });
+        const notificationsWithQuotes = await Promise.all(response.data.slice(0, 5).map(async (notification) => {
+            const quoteResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/quotes/${notification.quote_id}`);
+            return {
+                ...notification,
+                quoteText: quoteResponse.data.text,
+                quoteAuthor: quoteResponse.data.author,
+            };
+        }));
+        setNotifications(notificationsWithQuotes);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+};
 
-    // Function to mark a notification as read
-    const markAsRead = async (notificationId) => {
-        try {
-            await axios.put(`${import.meta.env.VITE_BACKEND_URL}/notifications/${notificationId}/read`);
-            fetchNotifications();  // Refetch notifications to update the UI
-        } catch (error) {
-            console.error('Error marking notification as read:', error);
-        }
-    };
+// Function to mark a notification as read
+const markAsRead = async (notificationId) => {
+    try {
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/notifications/${notificationId}/read`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`  // Include the token in the Authorization header
+            }
+        });
+        fetchNotifications();  // Refetch notifications to update the UI
+    } catch (error) {
+        console.error('Error marking notification as read:', error);
+    }
+};
 
-    // Function to delete a notification
-    const deleteNotification = async (notificationId) => {
-        try {
-            await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/notifications/${notificationId}`);
-            fetchNotifications();  // Refetch notifications to update the UI
-        } catch (error) {
-            console.error('Error deleting notification:', error);
-        }
-    };
+// Function to delete a notification
+const deleteNotification = async (notificationId) => {
+    try {
+        await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/notifications/${notificationId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`  // Include the token in the Authorization header
+            }
+        });
+        fetchNotifications();  // Refetch notifications to update the UI
+    } catch (error) {
+        console.error('Error deleting notification:', error);
+    }
+};
 
     return (
         <AnimatePresence>
